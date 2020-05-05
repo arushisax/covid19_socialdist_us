@@ -1,0 +1,205 @@
+State,term,search_term_popularity
+District of Columbia,social distancing,100
+Vermont,social distancing,70
+Washington,social distancing,62
+Massachusetts,social distancing,60
+Oregon,social distancing,59
+Maine,social distancing,56
+New Hampshire,social distancing,55
+Wyoming,social distancing,52
+Virginia,social distancing,52
+Hawaii,social distancing,52
+Minnesota,social distancing,51
+Utah,social distancing,51
+Montana,social distancing,50
+Colorado,social distancing,50
+Maryland,social distancing,49
+Rhode Island,social distancing,48
+Pennsylvania,social distancing,47
+Nebraska,social distancing,46
+Wisconsin,social distancing,45
+Iowa,social distancing,45
+Connecticut,social distancing,44
+Missouri,social distancing,43
+New Jersey,social distancing,43
+California,social distancing,42
+Illinois,social distancing,42
+Delaware,social distancing,40
+New York,social distancing,40
+North Dakota,social distancing,40
+Michigan,social distancing,40
+Idaho,social distancing,39
+Kentucky,social distancing,39
+Kansas,social distancing,38
+Ohio,social distancing,36
+New Mexico,social distancing,36
+Georgia,social distancing,35
+West Virginia,social distancing,35
+Arkansas,social distancing,35
+Alaska,social distancing,34
+Arizona,social distancing,34
+North Carolina,social distancing,34
+South Carolina,social distancing,34
+Tennessee,social distancing,33
+Indiana,social distancing,33
+Nevada,social distancing,32
+Texas,social distancing,32
+Florida,social distancing,32
+Oklahoma,social distancing,29
+Louisiana,social distancing,29
+Alabama,social distancing,27
+South Dakota,social distancing,26
+Mississippi,social distancing,21
+District of Columbia,COVID-19,70
+Vermont,COVID-19,83
+Washington,COVID-19,65
+Massachusetts,COVID-19,61
+Oregon,COVID-19,68
+Maine,COVID-19,69
+New Hampshire,COVID-19,66
+Wyoming,COVID-19,69
+Virginia,COVID-19,54
+Hawaii,COVID-19,73
+Minnesota,COVID-19,79
+Utah,COVID-19,61
+Montana,COVID-19,73
+Colorado,COVID-19,68
+Maryland,COVID-19,52
+Rhode Island,COVID-19,52
+Pennsylvania,COVID-19,50
+Nebraska,COVID-19,58
+Wisconsin,COVID-19,65
+Iowa,COVID-19,68
+Connecticut,COVID-19,51
+Missouri,COVID-19,64
+New Jersey,COVID-19,44
+California,COVID-19,51
+Illinois,COVID-19,55
+Delaware,COVID-19,52
+New York,COVID-19,42
+North Dakota,COVID-19,57
+Michigan,COVID-19,59
+Idaho,COVID-19,60
+Kentucky,COVID-19,53
+Kansas,COVID-19,60
+Ohio,COVID-19,49
+New Mexico,COVID-19,63
+Georgia,COVID-19,49
+West Virginia,COVID-19,53
+Arkansas,COVID-19,64
+Alaska,COVID-19,100
+Arizona,COVID-19,55
+North Carolina,COVID-19,49
+South Carolina,COVID-19,44
+Tennessee,COVID-19,57
+Indiana,COVID-19,56
+Nevada,COVID-19,44
+Texas,COVID-19,48
+Florida,COVID-19,46
+Oklahoma,COVID-19,63
+Louisiana,COVID-19,53
+Alabama,COVID-19,56
+South Dakota,COVID-19,64
+Mississippi,COVID-19,50
+District of Columbia,coronavirus,85
+Vermont,coronavirus,89
+Washington,coronavirus,81
+Massachusetts,coronavirus,86
+Oregon,coronavirus,86
+Maine,coronavirus,95
+New Hampshire,coronavirus,84
+Wyoming,coronavirus,97
+Virginia,coronavirus,87
+Hawaii,coronavirus,77
+Minnesota,coronavirus,94
+Utah,coronavirus,82
+Montana,coronavirus,95
+Colorado,coronavirus,94
+Maryland,coronavirus,86
+Rhode Island,coronavirus,81
+Pennsylvania,coronavirus,92
+Nebraska,coronavirus,72
+Wisconsin,coronavirus,96
+Iowa,coronavirus,82
+Connecticut,coronavirus,88
+Missouri,coronavirus,81
+New Jersey,coronavirus,93
+California,coronavirus,79
+Illinois,coronavirus,84
+Delaware,coronavirus,91
+New York,coronavirus,83
+North Dakota,coronavirus,88
+Michigan,coronavirus,100
+Idaho,coronavirus,96
+Kentucky,coronavirus,76
+Kansas,coronavirus,81
+Ohio,coronavirus,92
+New Mexico,coronavirus,97
+Georgia,coronavirus,77
+West Virginia,coronavirus,96
+Arkansas,coronavirus,80
+Alaska,coronavirus,81
+Arizona,coronavirus,84
+North Carolina,coronavirus,79
+South Carolina,coronavirus,75
+Tennessee,coronavirus,81
+Indiana,coronavirus,85
+Nevada,coronavirus,81
+Texas,coronavirus,74
+Florida,coronavirus,88
+Oklahoma,coronavirus,75
+Louisiana,coronavirus,80
+Alabama,coronavirus,87
+South Dakota,coronavirus,81
+Mississippi,coronavirus,77
+District of Columbia,all_terms,85
+Vermont,all_terms,81
+Washington,all_terms,69
+Massachusetts,all_terms,69
+Oregon,all_terms,71
+Maine,all_terms,73
+New Hampshire,all_terms,68
+Wyoming,all_terms,73
+Virginia,all_terms,64
+Hawaii,all_terms,67
+Minnesota,all_terms,75
+Utah,all_terms,65
+Montana,all_terms,73
+Colorado,all_terms,71
+Maryland,all_terms,62
+Rhode Island,all_terms,60
+Pennsylvania,all_terms,63
+Nebraska,all_terms,59
+Wisconsin,all_terms,69
+Iowa,all_terms,65
+Connecticut,all_terms,61
+Missouri,all_terms,63
+New Jersey,all_terms,60
+California,all_terms,57
+Illinois,all_terms,60
+Delaware,all_terms,61
+New York,all_terms,55
+North Dakota,all_terms,62
+Michigan,all_terms,66
+Idaho,all_terms,65
+Kentucky,all_terms,56
+Kansas,all_terms,60
+Ohio,all_terms,59
+New Mexico,all_terms,65
+Georgia,all_terms,54
+West Virginia,all_terms,61
+Arkansas,all_terms,60
+Alaska,all_terms,72
+Arizona,all_terms,58
+North Carolina,all_terms,54
+South Carolina,all_terms,51
+Tennessee,all_terms,57
+Indiana,all_terms,58
+Nevada,all_terms,52
+Texas,all_terms,51
+Florida,all_terms,55
+Oklahoma,all_terms,56
+Louisiana,all_terms,54
+Alabama,all_terms,57
+South Dakota,all_terms,57
+Mississippi,all_terms,49
