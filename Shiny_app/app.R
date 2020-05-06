@@ -16,15 +16,16 @@ library(wordcloud2)
 library(ggpubr)
 library(geojsonio)
 library(rgdal)
+library(readr)
 
 # Import sentiment data for US map: https://medium.com/@joyplumeri/how-to-make-interactive-maps-in-r-shiny-brief-tutorial-c2e1ef0447da
 
-us_senti <- read_rds("us_senti_locations.rds")
+us_senti <- read_rds("us_senti_locations_may.rds")
 
 # Categorize sentiment values
-us_senti$sent_type <- ifelse(us_senti$sent.value < 0, "Negative", 
-                                    ifelse(us_senti$sent.value == 0, "Neutral", 
-                                           ifelse(us_senti$sent.value > 0, "Positive", "other")))
+us_senti$sent_type <- ifelse(us_senti$sent.value_may < 0, "Negative", 
+                                    ifelse(us_senti$sent.value_may == 0, "Neutral", 
+                                           ifelse(us_senti$sent.value_may > 0, "Positive", "other")))
 # Set Colors for each sentiment value
 pal <- colorFactor(
     palette = c('red', 'blue', 'green'),
@@ -295,12 +296,12 @@ server <- function(input, output) {
     output$mymap <- renderLeaflet({
         leaflet(us_senti) %>% 
             setView(lng = -99, lat = 45, zoom = 2)  %>% #setting the view over ~ center of North America
-            addTiles() %>% 
-            addCircles(data = us_senti, lat = ~ lat, lng = ~ lng, weight = 5, 
+            addTiles() %>%
+            addCircles(data = us_senti, lat = ~ lat, lng = ~ lng, weight = 5,
                        popup = paste("Sentiment:",sep = " ",us_senti$sent_type, "<br>",
-                                     "Sentiment Score:", us_senti$sent.value, "<br>",
+                                     "Sentiment Score:", us_senti$sent.value_may, "<br>",
                                      "Text:", us_senti$text, "<br>"),
-                       label = ~as.character(paste0(sent_type)), 
+                       label = ~as.character(paste0(sent_type)),
                        fillOpacity = 0.5, color = ~pal(sent_type), radius = 5)
     })
     

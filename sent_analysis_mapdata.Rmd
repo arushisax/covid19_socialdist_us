@@ -1,0 +1,120 @@
+---
+title: "sentiment_analysis_mapdata"
+author: "Arushi Saxena"
+date: "4/15/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(twitteR)
+library(rtweet)
+library(SnowballC)
+library(tm)
+library(syuzhet)
+library(maps)
+library(ggthemes)
+library(revgeo)
+library(mgsub)
+library(lubridate)
+library(readr)
+```
+
+
+```{r Tweet Sentiment Analysis}
+# Text contains a lot of URLs, hashtags and other twitter handles. We will remove all these using the gsub function.
+
+senti_may <- read_csv("Shiny_app/tweets_0505.csv")
+
+
+head(senti_may$text)
+senti_may <- gsub("http.*","",senti_may$text)
+senti_may <- gsub("https.*","",senti_may)
+senti_may <- gsub("#.*","",senti_may)
+senti_may <- gsub("@.*","",senti_may)
+
+# Getting sentiment defining words
+
+word_may <- as.vector(senti_may)
+emotion_may <- get_nrc_sentiment(word_may)
+emotion2_may <- cbind(senti_may, emotion_may) 
+
+head(emotion2_may)
+
+# Getting most positive sentiment
+
+sent.value_may <- get_sentiment(word_may)
+most.positive_may <- word[sent.value_may == max(sent.value_may)]
+most.positive_may
+
+# Getting most negative sentiment
+
+most.negative_may <- word[sent.value_may <= min(sent.value_may)] 
+most.negative_may 
+
+# Make a tibble of scores by Twitter row ID
+sentiment_score_may <- tibble(manual_id = rep(1:18000),sent.value_may)
+
+
+#Make a US heatmap of the sentiment scores
+
+senti_locations_may <- lat_lng(twitter_sentiment_table2_may)
+head(senti_locations_may)
+lat_lng <- lat_lng(tweets_0505)
+
+
+# Add number ID to the table of lat / lng by tweet
+
+tweet_locations <- lat_lng %>%
+  select(lat, lng) %>%
+  mutate(manual_id = rep(1:18000))
+
+tweet_locations
+
+# Add Twitter Row IDs to original df with twitter text
+
+twitter_sentiment_table_may <- read_csv("Shiny_app/tweets_0505.csv") %>%
+mutate(manual_id = rep(1:18000)) %>%
+select(manual_id,text, country)
+
+twitter_sentiment_table_may
+
+# Join score table to location table on manual_id
+
+join1 <- left_join(twitter_sentiment_table_may,tweet_locations, sentiment_score_may, by = "manual_id")
+
+tweet_sentmap_data <- left_join(join1, sentiment_score_may, by = "manual_id")
+
+tweet_sentmap_data
+
+# Sub-select just the US data and US lats / longitudes. This assumes that people are tweeting from where they live, but might not always be the case
+
+us_senti_locations_may <- tweet_sentmap_data %>%
+  filter(lat != "" & lng !="") %>%
+  filter(country == "United States")
+
+us_senti_locations_may
+
+saveRDS(us_senti_locations_may, file = "us_senti_locations_may.rds")
+
+# Only look at social distancing data after 3/11 (COVID-19 declared as pandemic) and average the values accross counties and categories to get an average state level view.
+
+# Add Washington DC data manually from another source because it was missing in this web scraping
+
+socialdistance_march <- us2 %>%
+  mutate(date_formatted = ymd(date)) %>%
+  filter(date_formatted >= "2020-03-11") %>%
+  group_by(state) %>%
+  summarize(average = round(mean(value),digits = 1)) %>%
+  add_row(state = "District of Columbia", average = -17.3) %>%
+  transform(average = as.numeric(average)) %>%
+  arrange(average) 
+
+# Convert Average column to a numeric column
+socialdistance_march_F <- transform(socialdistance_march, average = as.numeric(average)) 
+socialdistance_march_F
+
+head(us2)
+```
+
