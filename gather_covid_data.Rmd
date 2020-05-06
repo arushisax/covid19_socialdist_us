@@ -61,7 +61,8 @@ tweets_0505
 # saveRDS(tweets_0412, file = "tweets_0412.rds")
 # tweets_0412_v2 <- readRDS(file = "tweets_0412.rds")
 
-#Write dataframe into a CSV for analysis
+#Write dataframe into a CSV for analysis. The 0412 is my first Twitter data pull and the 0505 file is second Twitter data pull. I use 0412 for most of this analysis and only use 0505 data for the Geographic Analysis tab
+
 write_as_csv(tweets_0412, "tweets_0412_v2.csv", prepend_ids = TRUE, na = "", fileEncoding = "UTF-8")
 
 write_as_csv(tweets_0505, "tweets_0505.csv", prepend_ids = TRUE, na = "", fileEncoding = "UTF-8")

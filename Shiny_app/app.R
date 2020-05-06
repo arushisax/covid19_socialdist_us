@@ -302,7 +302,11 @@ server <- function(input, output) {
                                      "Sentiment Score:", us_senti$sent.value_may, "<br>",
                                      "Text:", us_senti$text, "<br>"),
                        label = ~as.character(paste0(sent_type)),
-                       fillOpacity = 0.5, color = ~pal(sent_type), radius = 5)
+                       fillOpacity = 0.5, color = ~pal(sent_type), radius = 5) %>%
+            addLegend("topright", pal = pal, values = ~sent_type,
+                      title = "Sentiment Category",
+                      opacity = 1)
+            
     })
     
     #Scatterplot with reactive data
