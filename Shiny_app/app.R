@@ -1,5 +1,6 @@
 # Arushi is analyzing Twitter sentiment about social distancing and looking into social distancing data as well
-# We load the necessary packages that will be used in the application.
+
+######### A: PREPROCESSING----
 
 library(shiny)
 library(tidyverse)
@@ -18,37 +19,48 @@ library(geojsonio)
 library(rgdal)
 library(readr)
 
-# Import sentiment data for US map: https://medium.com/@joyplumeri/how-to-make-interactive-maps-in-r-shiny-brief-tutorial-c2e1ef0447da
+######### B: DATA LOADING AND SET UP FOR SHINY ----
 
-us_senti <- read_rds("us_senti_locations_may.rds")
+### TAB 1 DATA
 
-# Categorize sentiment values
-us_senti$sent_type <- ifelse(us_senti$sent.value_may < 0, "Negative", 
+    # Load word cloud data for Tab 1
+    # This rds was processed in socialdist_word_cloud.rmd
+
+    data_cleaned <- read_rds("wordcloud_data2.rds")
+
+### TAB 3 DATA
+
+    # Import geospatial map data for Tab 3:
+    # This rds was processed in sent_analysis_mapdata.rmd
+
+    us_senti <- read_rds("us_senti_locations_may.rds")
+
+    # Set up multi-colored sentiment circles for Tab 3
+    us_senti$sent_type <- ifelse(us_senti$sent.value_may < 0, "Negative", 
                                     ifelse(us_senti$sent.value_may == 0, "Neutral", 
                                            ifelse(us_senti$sent.value_may > 0, "Positive", "other")))
-# Set Colors for each sentiment value
-pal <- colorFactor(
+    # Set Colors for each sentiment value
+    pal <- colorFactor(
     palette = c('red', 'blue', 'green'),
     domain = us_senti$sent_type
 )
 
-# Load data for word cloud
-data_cleaned <- read_rds("wordcloud_data2.rds")
 
-####### For Google Search analysis tab
-# Load google search trends vs. social distancing table
+### TAB 4 DATA
 
-scatterdata <- read_rds("joined_dataF.rds")
+    # Load data for scatterplot
+    # This RDS was processed in state_correlations.rds
 
+    scatterdata <- read_rds("joined_dataF.rds")
 
-# Define UI for application that draws a histogram
+######### C: SHINY APP UI ----
+
 ui <-   shinyUI(
     navbarPage("COVID-19: Early Public Sentiment about #SocialDistancing",
         theme = shinytheme("united"),
         
-        ##########
-        ##ABOUT##
-        #########
+        # TAB 1: At a Glance --------------------------
+        
         tabPanel("At a Glance",
                  br(),
                  ## Load image
@@ -90,10 +102,12 @@ ui <-   shinyUI(
                  
         ),
         
+        # TAB 2: Tweet Analysis --------------------------
+        
         tabPanel("Tweet Analysis",
                  tabsetPanel(
                      
-                     # this page includes the world cloud and sentiment analysis of specific words found throughout the tweets 
+                     # This page includes the world cloud and sentiment analysis of specific words found throughout the tweets 
                      
                      tabPanel("Word Cloud",
                               
@@ -114,7 +128,7 @@ ui <-   shinyUI(
                               mainPanel(
                                   plotOutput("plot")))),
                               
-                            
+        # TAB 3: Sentiment Analysis --------------------------
                      
                      tabPanel("Sentiment Analysis",
                               
@@ -151,7 +165,7 @@ ui <-   shinyUI(
                      
                      ))),
         
-        #this tab shows the interactive maps 
+        # TAB 4: Geographic Analysis --------------------------
         
         tabPanel("Geographic Analysis",
                  
@@ -162,8 +176,10 @@ ui <-   shinyUI(
                  h4("There is a relatively equal distribution of positive, negative, and neutral sentiment with positive sentiment being greater than expected"),
         
              mainPanel( 
-                #this will create a space for us to display our map
+                # This will create a space for us to display our map
                 leafletOutput(outputId = "mymap"))),
+        
+        # TAB 5: Google Search Trends and Correlations --------------------------
         
         tabPanel("Google Search Trends",
                  
@@ -190,6 +206,9 @@ ui <-   shinyUI(
                  
               
                  ),
+        
+        # TAB 6: About  --------------------------
+        
         tabPanel("About",
                  
                  
@@ -251,10 +270,11 @@ ui <-   shinyUI(
         
         
                              
-# Define server logic required to draw a histogram
+######### C: SHINY APP SERVER ----
+
 server <- function(input, output) {
     
-    # Load image in About page
+    # 1 OUTPUT At a Glance
     output$flattencurve <- renderImage({
         
         list(src = 'flatten_curve.jpeg',
@@ -264,14 +284,14 @@ server <- function(input, output) {
         deleteFile = FALSE
     )
     
-    # Make the Word Cloud
+    # 2.1 OUTPUT Word Cloud
     output$plot <- renderPlot({
         wordcloud(names(data_cleaned), data_cleaned,scale=c(8,0.25),
                      min.freq = input$freq, max.words=input$max,
                      colors=brewer.pal(8, "Dark2"))
     })
     
-    # First Sentiment Analysis Chart (Polarity) 
+    # 2.2 OUTPUT Sentiment Analysis Chart A (Polarity) 
     output$polarity_chart2 <- renderImage({
         list(
             src = "polarity_chart2.png",
@@ -281,7 +301,7 @@ server <- function(input, output) {
         )
     }, deleteFile = FALSE)
     
-    # Second Sentiment Analysis Chart (Frequency) 
+    # 2.2 OUTPUT Sentiment Analysis Chart B (Frequency) 
     output$freq_chart <- renderImage({
         list(
             src = "freq_chart.png",
@@ -292,7 +312,7 @@ server <- function(input, output) {
     }, deleteFile = FALSE)
     
     
-    # create the map
+    # 3 OUTPUT US Interactive Map
     output$mymap <- renderLeaflet({
         leaflet(us_senti) %>% 
             setView(lng = -99, lat = 45, zoom = 2)  %>% #setting the view over ~ center of North America
@@ -309,7 +329,7 @@ server <- function(input, output) {
             
     })
     
-    #Scatterplot with reactive data
+    # 4 OUTPUT Scatterplots with correlations
 
     output$scatterplot <- renderPlot({
         
@@ -335,5 +355,5 @@ server <- function(input, output) {
     
 }
 
-# Run the application 
+######### D: RUN THE SHINY APPLICATION ----
 shinyApp(ui = ui, server = server)
