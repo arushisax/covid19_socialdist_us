@@ -5,8 +5,8 @@ The purpose of the project is to understand public sentiment about social distan
 
 ### The Workflow
 This repository contains:
-Shiny_app, a folder containing the actual Shiny app (`app.r` which powers my app), requisite raw data, and Shiny-ready processed data
-Data Processing, a folder containing all .rmd files in which I processed dataframes and user tables for Shiny_app
+  - Shiny_app, a folder containing the actual Shiny app (`app.r` which powers my app), requisite raw data, and Shiny-ready processed data
+  - Data Processing, a folder containing all .rmd files in which I processed dataframes and user tables for Shiny_app
 
 ### Notes on the Project
 
