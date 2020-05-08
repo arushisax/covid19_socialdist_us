@@ -1,0 +1,56 @@
+---
+title: "word_cloud"
+author: "Arushi Saxena"
+date: "4/15/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("twitteR")
+library("textmineR")
+library("tm")
+#install.packages("RWeka")
+#install.packages("tm")
+#library("RWeka")
+```
+
+```{r}
+# Create main dataframe for Word Cloud analysis
+wc_df <- read_csv("Shiny_app/tweets_0412_v2.csv")
+
+# Change dataset into a corpus
+data_corp <- VCorpus(VectorSource(wc_df)) 
+wc_df[which(is.na(wc_df))] <- "NULLVALUEENTERED"
+
+# Data pre-processing
+data_corp <- tm_map(data_corp, tolower)
+data_corp <- tm_map(data_corp, PlainTextDocument)
+data_corp <- tm_map(data_corp, removePunctuation)
+
+for (i in seq(data_corp)) {
+  data_corp[[i]] <- gsub('[^a-zA-Z|[:blank:]]', "", data_corp[[i]])
+}
+
+# Remove stop words from Word Cloud
+new_stops <-c("covid","iphone","coronavirus","hrefhttptwittercomdownloadandroid","relnofollowtwitter","androida","hrefhttptwittercomdownloadiphone","relnofollowtwitter","iphonea","web","rt","chuonlinenews","hrefhttpsmobiletwittercom","hrefhttptwittercomdownloadipad","bharianmy","lebih","berbanding","dijangkiti","kumpulan","mudah","terdedah","covidhttpstcoigdxdtmvrg","hrefhttpsabouttwittercomproductstweetdeck", "darah","httpspbstwimgcomprofilebanners","httpabstwimgcomimagesthemesthemebgpng","httpabstwimgcomimagesthemesthemebggif","also","cna","twitter")
+data_corp <- tm_map(data_corp, removeWords, words = c(stopwords("English"), new_stops))
+data_corp <- tm_map(data_corp, stripWhitespace)
+data_corp <- tm_map(data_corp, PlainTextDocument)
+
+myDTM = TermDocumentMatrix(data_corp,
+              control = list(minWordLength = 1))
+  
+  m = as.matrix(myDTM)
+  
+  data_cleaned <- sort(rowSums(m), decreasing = TRUE)
+  
+# Save the Word Cloud as an RDS so that I can integrate it into shinyapp 
+  
+  saveRDS(data_cleaned, file = "wordcloud_data2.rds")
+  
+  data_cleaned
+  
+# Data_cleaned_freq <- rowSums(data_cleaned_tdm_m)
+```
+
