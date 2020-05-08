@@ -1,7 +1,7 @@
 # covid19_socialdist_us
 
 ## COVID-19: An Exploration of Early Public Sentiment about Social Distancing through Twitter and Google Reports
-The purpose of the project is to understand public sentiment about social distancing via Twitter data, across the United States, and correlate it to the extent to which US states are effectively social distancing.
+The purpose of the project is to understand public sentiment about social distancing via Twitter data, across the United States, and correlate it to the extent to which US states are effectively social distancing. https://arushisax.shinyapps.io/COVID19_socialdistancing/
 
 ### The Workflow
 This repository contains:
