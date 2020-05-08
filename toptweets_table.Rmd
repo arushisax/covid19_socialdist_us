@@ -41,8 +41,11 @@ love <- lib %>%
 # Combine all table into one top tweets table
 toptweets <- rbind(false,photo,trump,love) %>%
   rename(`Tweet Text` = text, `Favorites` = favorite_count, 'Retweets' = retweet_count)
-  
 
 toptweets
+  
+# Save the toptweets table as RDS so that I can integrate it into shinyapp 
+  saveRDS(toptweets, file = "top_words_table.rds")
+
 ```
 

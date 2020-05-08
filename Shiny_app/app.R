@@ -27,6 +27,12 @@ library(readr)
     # This rds was processed in socialdist_word_cloud.rmd
 
     data_cleaned <- read_rds("wordcloud_data2.rds")
+    
+    # Load top words table for Tab 1
+    # This rds was processed in toptweets_table.rmd
+    
+    top_words <- read_rds("top_words_table.rds")
+    
 
 ### TAB 3 DATA
 
@@ -70,7 +76,7 @@ ui <-   shinyUI(
                  h2("How do US citizens feel about COVID-19 social distancing and how well are they adhering to the measure? ", align = "center"),
                  h4(em("An analysis of Twitter activity to understand public reaction in March 2020"), align = "center"),
                  
-                  h3("Methodology"),
+                  h3("Key Questions and Takeaways"),
                  
                  br(),
                  
@@ -84,19 +90,19 @@ ui <-   shinyUI(
                  
                  p(strong("Tweet Analysis - Sentiments:")),
                  p(em("How positive or negative are people’s opinions about social distancing?")),
-                 p("+ Most common negative words and positive words. The takeaway from this analysis is that there are more positive themes as opposed to negative themes in this random sampling."),
+                 p("+ Key takeaway from this analysis is that there are more positive themes as opposed to negative themes in this random sampling."),
                  
                  br(),
                  
                  p(strong("Geographic Analysis:")),
                  p(em("Does positive or negative sentiment vary by US state?")),
-                 p("+ There is a mix of sentiment throughout the United States, with positive and neutral statements having greater representation than expected. These Tweets are a random sample and do not accurately capture public sentiment because many citizens do not post thoughts on Twitter. Furthermore, sentiment analysis libraries are not sophisticated enough to pick up tones such as sarcasm, which are quite common on Twitter."),
+                 p("+ While there is a mix of sentiment throughout the United States, key takeaways is that positive and neutral statements have greater representation than expected. These Tweets are a random sample and do not accurately capture public sentiment because many citizens do not post thoughts on Twitter. Furthermore, sentiment analysis libraries are not sophisticated enough to pick up tones such as sarcasm, which are quite common on Twitter."),
                  
                  br(),
                  
                  p(strong("Google Search Trends:")),
                  p(em("If people are social distancing more, are they also more likely to read about social distancing?")),
-                 p("+ Found reasonably strong correlation between social distancing and search activity related to those concepts. Therefore, as individuals are forced or inclined to social distance, they want to increase their awareness of the topic. One can also make the reverse claim but I chose social distancing as my independent variable, as opposed to the outcome variable, because social distancing is more likely to be an exogenous directive mandated by local and /or state governments. Given some of correlation coefficients and p-values demonstrated by these charts, it is reasonable to state that as social distancing increases within a US state, the appetite to learn about it may also increase.")
+                 p("+ Key takeaway is that there is reasonably strong correlation between social distancing and search activity related to those concepts. Therefore, as individuals are forced or inclined to social distance, they want to increase their awareness of the topic. One can also make the reverse claim but I chose social distancing as my independent variable, as opposed to the outcome variable, because social distancing is more likely to be an exogenous directive mandated by local and /or state governments. Given some of correlation coefficients and p-values demonstrated by these charts, it is reasonable to state that as social distancing increases within a US state, the appetite to learn about it may also increase.")
                  
                  
                  
@@ -126,13 +132,32 @@ ui <-   shinyUI(
                                                          min = 1,  max = 200,  value = 100)),
                               # Show Word Cloud
                               mainPanel(
-                                  plotOutput("plot")))),
+                                  plotOutput("plot"))),
+                              
+                              # Show Top Words Table
+                              sidebarLayout(
+                                  sidebarPanel(
+                                      helpText("Pick a top word and view its tweets"),
+                                      h4("Word Search"),
+                                      selectInput("word", NULL,
+                                                  choices = list("false" = "false",
+                                                                 "photo" = "photo",
+                                                                 "trump" = "trump",
+                                                                 "love" = "love"
+                                                                 ),
+                                                  selected = "false")),
+                                  mainPanel(
+                                      DTOutput("word_table"))
+                              
+                              )),
                               
         # TAB 3: Sentiment Analysis --------------------------
                      
                      tabPanel("Sentiment Analysis",
                               
                               h3("Positive vs. Negative Sentiments for Selected Themes"),
+                              br(),
+                              h4("Positive sentiment and positive words are both stronger and more frequent than negative words"),
                               
                               br(),
                               
@@ -169,11 +194,12 @@ ui <-   shinyUI(
         
         tabPanel("Geographic Analysis",
                  
-                 h3("How positive, negative, or neutral is sentiment across the United States?"),
+                 h3("How positive, negative, or neutral do people feel about social distancing across the United States?"),
                  
                  br(),
                  
-                 h4("There is a relatively equal distribution of positive, negative, and neutral sentiment with positive sentiment being greater than expected"),
+                 h4("The incidence of positive or neutral sentiment (as opposed to negative sentiment) is greater than expected"),
+                 p(em("Tweets from May 2020")),
         
              mainPanel( 
                 # This will create a space for us to display our map
@@ -254,7 +280,10 @@ ui <-   shinyUI(
                                             h4(strong("About Me")),
                                             
                                             p("My name is Arushi Saxena and I am first year Masters in Design Engineering (MDE) candidate at Harvard’s Graduate School of Design and the School of Engineering and Applied Sciences. My research focus is on the ethical design, development, and use of technology."),
-                                            p("You can reach me at ",
+                                            p("The code for this project can be viewed" ,
+                                              a("here.",
+                                                href = "https://github.com/arushisax/covid19_socialdist_us")),
+                                            p("You can also reach me at ",
                                               a("arushisaxena@mde.harvard.edu",
                                                 href = "mailto: arushisaxena@mde.harvard.edu",),
                                               "or ",
@@ -289,6 +318,26 @@ server <- function(input, output) {
         wordcloud(names(data_cleaned), data_cleaned,scale=c(8,0.25),
                      min.freq = input$freq, max.words=input$max,
                      colors=brewer.pal(8, "Dark2"))
+    })
+    
+    # 2.1 OUTPUT Top Words Table
+    
+    output$word_table <- renderDT({
+        
+        table <- top_words %>% 
+            
+            #input filters by word
+            
+            filter(term == input$word) %>%
+            select(-term)
+        
+        datatable(table,
+                  class = 'display',
+                  rownames = FALSE,
+                  selection = 'single',
+                  colnames = c("Tweet Text", "Favorites", "Retweets"),
+                  options = list(dom = 'tip')
+        )
     })
     
     # 2.2 OUTPUT Sentiment Analysis Chart A (Polarity) 
